@@ -16,16 +16,16 @@ class App extends Component {
   };
 
   imageClicked = id => {
-    let clicked = this.state.clicked;
+    const clicked = this.state.clicked;
 
     //if statement when image has already been clicked
     if (clicked.includes(id)) {
       alert("You have already clicked that one. You lose.");
       if (this.state.score > this.state.highscore) {
-        this.setState({ highscore: this.state.score, score: 0 });
+        this.setState({ image, clicked: [], highscore: this.state.score, score: 0 });
         return;
       } else {
-        this.setState({ score: 0 });
+        this.setState({ image, clicked: [], score: 0 });
         return;
       }
     }
@@ -33,7 +33,7 @@ class App extends Component {
     //if statement when the id is not in the array
     else {
       clicked.push(id);
-      this.setState({ score: this.clicked.length });
+      this.setState({ image, score: clicked.length });
 
       for (let i = image.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -41,10 +41,11 @@ class App extends Component {
       }
       if (clicked.length === 12) {
         alert("You did it! You clicked all the images!");
+        this.setState({ image, clicked: [], highscore: this.state.score, score: 0 });
       }
       return;
     }
-  }
+  };
 
 
 
@@ -57,7 +58,7 @@ class App extends Component {
         {this.state.image.map(image => (
             <Cards 
             id={image.id} 
-            key={image.id} 
+            imageClicked={this.imageClicked}
             image={image.image} 
             />
         ))}
